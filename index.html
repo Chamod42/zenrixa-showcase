@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smooth Scroll Animation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            scroll-behavior: smooth;
+        }
+
+        .animation-container {
+            position: relative;
+        }
+
+        /* First canvas is absolute inside a sticky wrapper to allow overlay */
+        #scroll-canvas-1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        /* Second canvas uses sticky directly */
+        #scroll-canvas-2 {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+        }
+
+        /* Removed black-section fixed height to allow dynamic sizing for pricing content */
+    </style>
+</head>
+<body>
+    <div id="animation-container-1" class="animation-container" style="height: 500vh;">
+        <!-- Sticky wrapper ensures the canvas AND the overlay stay in view while scrolling 500vh -->
+        <div class="sticky top-0 left-0 w-full h-screen overflow-hidden">
+            <canvas id="scroll-canvas-1"></canvas>
+            
+            <!-- Overlay Content (Zenrixa Section 1 Layout) -->
+            <div class="absolute inset-0 z-10 flex flex-col pointer-events-none font-sans">
+                <!-- Header -->
+                <header class="w-full flex items-center justify-between py-6 px-6 md:px-12 border-b border-white/10 pointer-events-auto bg-black/20 backdrop-blur-sm">
+                    <!-- Brand Logo -->
+                    <a href="#home" class="flex items-center gap-3 group text-white">
+                        <div class="relative w-9 h-9 flex items-center justify-center">
+                            <svg viewBox="0 0 100 100" class="w-full h-full fill-current transition-transform duration-500 group-hover:rotate-180">
+                                <path d="M50 5 L95 50 L50 95 L5 50 Z" fill="none" stroke="currentColor" stroke-width="4" />
+                                <path d="M50 25 L75 50 L50 75 L25 50 Z" fill="currentColor" opacity="0.9" />
+                                <circle cx="50" cy="50" r="5" fill="black" />
+                            </svg>
+                        </div>
+                        <span class="font-bold tracking-tight text-xl uppercase transition-colors group-hover:text-neutral-300">
+                            Zenrixa
+                        </span>
+                    </a>
+
+                    <!-- Nav Links -->
+                    <nav class="hidden lg:flex items-center gap-8 text-white">
+                        <a href="#home" class="text-[11px] font-medium tracking-[0.2em] uppercase text-white/60 hover:text-white transition-all duration-300 relative group py-2">Home</a>
+                        <a href="#product" class="text-[11px] font-medium tracking-[0.2em] uppercase text-white/60 hover:text-white transition-all duration-300 relative group py-2">Product</a>
+                        <a href="#about" class="text-[11px] font-medium tracking-[0.2em] uppercase text-white/60 hover:text-white transition-all duration-300 relative group py-2">About</a>
+                        <a href="#brands" class="text-[11px] font-medium tracking-[0.2em] uppercase text-white/60 hover:text-white transition-all duration-300 relative group py-2">Brands</a>
+                        <a href="#careers" class="text-[11px] font-medium tracking-[0.2em] uppercase text-white/60 hover:text-white transition-all duration-300 relative group py-2">Careers</a>
+                        <a href="#partners" class="text-[11px] font-medium tracking-[0.2em] uppercase text-white/60 hover:text-white transition-all duration-300 relative group py-2">Partners</a>
+                    </nav>
+
+                    <!-- Menu Button -->
+                    <div class="flex items-center gap-6">
+                        <button class="flex items-center gap-2 border border-white/20 rounded-full py-2 px-5 hover:border-white transition-all cursor-pointer bg-black/80 text-white font-medium text-xs tracking-[0.15em]">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/75"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                            <span>MENU</span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Main Grid Content -->
+                <main class="w-full max-w-7xl mx-auto px-6 md:px-12 flex-grow flex flex-col justify-center py-10 md:py-16 pointer-events-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center w-full">
+                        <!-- Left Column -->
+                        <div class="lg:col-span-7 flex flex-col justify-center">
+                            <div class="flex flex-col gap-8 max-w-2xl justify-center py-6 text-white transition-all duration-1000 opacity-100 translate-y-0">
+                                <!-- Tagline -->
+                                <div class="flex items-center gap-2 text-[10px] tracking-[0.4em] uppercase">
+                                    <span class="inline-block w-1.5 h-1.5 bg-white rounded-full"></span>
+                                    <span>CREATIVE AGENCY // ED. 01</span>
+                                </div>
+
+                                <!-- Headline -->
+                                <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-tighter leading-[1.05] uppercase drop-shadow-lg">
+                                    The Future<br />is Closer<br />Than You Think.
+                                </h1>
+
+                                <!-- Sub text -->
+                                <p class="max-w-md text-sm md:text-base font-light leading-relaxed drop-shadow-md">
+                                    A silent dialogue between high-fidelity digital systems and the void of raw negative space. Delivering only what truly matters.
+                                </p>
+
+                                <!-- Social Proof -->
+                                <div class="flex flex-wrap items-center gap-6 mt-2">
+                                    <div class="flex items-center gap-1.5 text-xs tracking-[0.1em] uppercase">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                        <span class="ml-2">5.0 SCORE</span>
+                                    </div>
+                                    <span class="w-[1px] h-4 bg-white/20 hidden sm:block"></span>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-xs uppercase tracking-[0.1em]">
+                                            <strong class="font-bold">3000+</strong> PARTNERS
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="flex flex-wrap items-center gap-4 mt-4">
+                                    <button class="flex items-center gap-3 bg-white text-black font-semibold rounded-full py-3.5 pl-6 pr-3 shadow-lg cursor-pointer transition-transform hover:scale-105 active:scale-95">
+                                        <span class="text-xs uppercase tracking-[0.2em] font-bold">Chat With Us</span>
+                                        <div class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                        </div>
+                                    </button>
+                                    <a href="#works" class="flex items-center justify-center border border-white/20 hover:border-white hover:bg-white/5 rounded-full py-3.5 px-8 text-xs font-bold uppercase tracking-[0.2em] cursor-pointer bg-black/80 transition-all duration-300">
+                                        Our Works
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="lg:col-span-5 flex justify-center items-center">
+                            <div class="relative w-full max-w-md mx-auto lg:mx-0 py-4 flex items-center justify-center">
+                                <div class="relative w-full bg-neutral-950/90 backdrop-blur-md border border-white/10 rounded-2xl p-8 flex flex-col justify-center min-h-[280px] shadow-2xl shadow-black overflow-hidden text-white transition-all duration-1000 opacity-100 translate-y-0">
+                                    <div class="relative overflow-hidden min-h-[140px] flex flex-col justify-center text-left gap-4">
+                                        <h3 class="text-3xl font-medium tracking-tight uppercase leading-tight font-sans">
+                                            Design to explore.
+                                        </h3>
+                                        <p class="text-sm leading-relaxed font-sans font-light text-white/80">
+                                            Crafting high-fidelity immersive interfaces that turn complex workflows into natural, fluid human experiences.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    
+    <div id="black-section" class="relative bg-[#0A0A0A] text-white font-sans overflow-x-hidden pb-24 selection:bg-[#F27D26]/30 z-20">
+      <!-- Absolute Typographic Background Elements -->
+      <div class="absolute top-[8%] left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none overflow-hidden z-0 opacity-[0.03]">
+        <h1 class="text-[12vw] font-bold text-white leading-none tracking-tighter uppercase font-sans">Pricing</h1>
+        <div class="text-[3vw] font-medium text-[#F27D26] tracking-widest mt-[-2.5vw] font-sans">Forma AI</div>
+      </div>
+
+      <!-- Top Header Navigation -->
+      <header class="relative z-10 w-full max-w-7xl mx-auto px-6 py-8 flex items-center justify-between border-b border-white/5 pb-6 mb-8">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-md">
+            <span class="text-black font-extrabold text-sm tracking-tighter">F</span>
+          </div>
+          <div>
+            <span class="text-sm font-black text-white tracking-wider uppercase">Forma<span class="text-[#F27D26]">.</span>AI</span>
+            <span class="block text-[8px] tracking-[0.25em] text-neutral-500 uppercase font-mono mt-0.5">PREMIUM DESIGN ENGINE v.2.4</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="hidden sm:block text-right">
+            <p class="text-xs font-mono text-[#F27D26]">UTC 14:02:44</p>
+            <p class="text-[9px] uppercase tracking-widest text-neutral-500">SYSTEM: ACTIVE</p>
+          </div>
+          <a href="#" class="text-[10px] text-neutral-300 uppercase tracking-wider font-bold hover:bg-white hover:text-black border border-white/20 px-4 py-2 rounded-full transition-all">Features Matrix</a>
+        </div>
+      </header>
+
+      <!-- Hero Intro -->
+      <main class="relative z-10 w-full max-w-7xl mx-auto px-6 pt-12">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-1.5 bg-[#F27D26]/10 border border-[#F27D26]/20 text-[#F27D26] px-3.5 py-1.5 rounded-full text-[11px] font-medium tracking-wide uppercase mb-4">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg> Introducing Version 2.4
+          </div>
+          <h2 class="text-4xl sm:text-5xl font-black tracking-tight text-white uppercase mb-4">A plan for every workspace.</h2>
+          <p class="text-neutral-400 text-xs max-w-lg mx-auto leading-relaxed">Forma AI empowers teams to generate layout wireframes instantly. Unlock full-resolution rendering & custom model exports.</p>
+        </div>
+
+        <!-- Pricing Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto px-4 z-10 relative">
+          <!-- Card 1 -->
+          <div class="relative flex flex-col justify-between p-8 rounded-[32px] overflow-hidden transition-all duration-300 h-full group bg-white/5 border border-white/10 hover:border-white/20 backdrop-blur-2xl">
+            <div>
+              <div class="relative w-full h-40 mb-6 rounded-2xl overflow-hidden bg-black/40 border border-white/5 group-hover:border-white/10 transition-colors">
+                <img src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&w=600&q=80" alt="Free" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/80 via-transparent to-transparent pointer-events-none"></div>
+              </div>
+              <span class="text-sm font-medium text-neutral-400 block mb-2 tracking-wide">Hobby</span>
+              <div class="flex items-baseline gap-1 mb-4 h-16">
+                <h3 class="text-[40px] font-bold text-white tracking-tight leading-none">Free</h3>
+              </div>
+              <p class="text-neutral-400 text-xs leading-relaxed mb-6 min-h-[36px]">Perfect for individuals exploring layout generation.</p>
+              <div class="h-px bg-zinc-800/50 w-full mb-6"></div>
+              <ul class="space-y-4 mb-8">
+                <li class="flex items-start gap-3 text-neutral-300 text-xs"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-zinc-900 border border-zinc-800 text-neutral-300 shrink-0"><svg class="w-3 h-3 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span><span class="leading-tight pt-0.5">50 generations/mo</span></li>
+                <li class="flex items-start gap-3 text-neutral-300 text-xs"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-zinc-900 border border-zinc-800 text-neutral-300 shrink-0"><svg class="w-3 h-3 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span><span class="leading-tight pt-0.5">Standard resolution</span></li>
+              </ul>
+            </div>
+            <div class="mt-auto">
+              <button class="w-full py-3 px-6 rounded-full font-bold uppercase tracking-wider text-xs text-center transition-all duration-300 bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 hover:border-transparent">Get Started</button>
+            </div>
+          </div>
+          <!-- Card 2 (Pro - Popular) -->
+          <div class="relative flex flex-col justify-between p-8 rounded-[32px] overflow-hidden transition-all duration-300 h-full group bg-white/[0.06] border-2 border-[#F27D26]/50 shadow-[0_0_40px_rgba(242,125,38,0.12)] backdrop-blur-2xl">
+            <div class="absolute top-4 right-6 flex items-center gap-1 bg-[#F27D26]/10 border border-[#F27D26]/30 text-[#F27D26] px-3.5 py-1 rounded-full text-[11px] font-medium tracking-wide uppercase select-none z-10">
+              <svg class="w-3 h-3 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg> Popular Choice
+            </div>
+            <div>
+              <div class="relative w-full h-40 mb-6 rounded-2xl overflow-hidden bg-black/40 border border-white/5 transition-colors">
+                <img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=600&q=80" alt="Pro" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/80 via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute inset-0 bg-[#F27D26]/5 mix-blend-color-dodge opacity-60 pointer-events-none"></div>
+              </div>
+              <span class="text-sm font-medium text-neutral-400 block mb-2 tracking-wide">Pro</span>
+              <div class="flex items-baseline gap-1 mb-4 h-16">
+                <h3 class="text-[40px] font-bold text-white tracking-tight leading-none">$29</h3><span class="text-neutral-500 text-sm font-medium">/m</span>
+              </div>
+              <p class="text-neutral-400 text-xs leading-relaxed mb-6 min-h-[36px]">Advanced features for professional creators.</p>
+              <div class="h-px bg-zinc-800/50 w-full mb-6"></div>
+              <ul class="space-y-4 mb-8">
+                <li class="flex items-start gap-3 text-neutral-300 text-xs"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-zinc-900 border border-zinc-800 text-neutral-300 shrink-0"><svg class="w-3 h-3 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span><span class="leading-tight pt-0.5">Unlimited generations</span></li>
+                <li class="flex items-start gap-3 text-neutral-300 text-xs"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-zinc-900 border border-zinc-800 text-neutral-300 shrink-0"><svg class="w-3 h-3 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span><span class="leading-tight pt-0.5">4K exports</span></li>
+              </ul>
+            </div>
+            <div class="mt-auto">
+              <button class="w-full py-3 px-6 rounded-full font-bold uppercase tracking-wider text-xs text-center transition-all duration-300 bg-[#F27D26] text-white hover:bg-[#F27D26]/90 hover:shadow-[0_0_20px_rgba(242,125,38,0.35)]">Upgrade to Pro</button>
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div class="relative flex flex-col justify-between p-8 rounded-[32px] overflow-hidden transition-all duration-300 h-full group bg-white/5 border border-white/10 hover:border-white/20 backdrop-blur-2xl">
+            <div>
+              <div class="relative w-full h-40 mb-6 rounded-2xl overflow-hidden bg-black/40 border border-white/5 transition-colors">
+                <img src="https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?auto=format&fit=crop&w=600&q=80" alt="Team" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/80 via-transparent to-transparent pointer-events-none"></div>
+              </div>
+              <span class="text-sm font-medium text-neutral-400 block mb-2 tracking-wide">Team</span>
+              <div class="flex items-baseline gap-1 mb-4 h-16">
+                <h3 class="text-[40px] font-bold text-white tracking-tight leading-none">$99</h3><span class="text-neutral-500 text-sm font-medium">/m</span>
+              </div>
+              <p class="text-neutral-400 text-xs leading-relaxed mb-6 min-h-[36px]">Collaborative workspaces for agencies.</p>
+              <div class="h-px bg-zinc-800/50 w-full mb-6"></div>
+              <ul class="space-y-4 mb-8">
+                <li class="flex items-start gap-3 text-neutral-300 text-xs"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-zinc-900 border border-zinc-800 text-neutral-300 shrink-0"><svg class="w-3 h-3 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span><span class="leading-tight pt-0.5">Everything in Pro</span></li>
+                <li class="flex items-start gap-3 text-neutral-300 text-xs"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-zinc-900 border border-zinc-800 text-neutral-300 shrink-0"><svg class="w-3 h-3 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span><span class="leading-tight pt-0.5">Custom AI models</span></li>
+              </ul>
+            </div>
+            <div class="mt-auto">
+              <button class="w-full py-3 px-6 rounded-full font-bold uppercase tracking-wider text-xs text-center transition-all duration-300 bg-white/10 hover:bg-white text-white hover:text-black border border-white/20 hover:border-transparent">Contact Sales</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Grid Segment -->
+        <div class="mt-20 max-w-4xl mx-auto px-4">
+          <div class="text-center mb-10">
+            <h3 class="text-xl font-bold text-white tracking-tight flex items-center justify-center gap-1.5">
+              <svg class="w-5 h-5 text-neutral-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Frequently Asked Questions
+            </h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div class="p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
+              <h4 class="font-semibold text-white mb-2">Can I upgrade or downgrade anytime?</h4>
+              <p class="text-neutral-400 leading-relaxed text-xs">Absolutely! Subscriptions are processed instantly. When upgrading or downgrading, your billing cycle will adapt dynamically with pro-rated offsets.</p>
+            </div>
+            <div class="p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
+              <h4 class="font-semibold text-white mb-2">What happens to my cloud projects if I cancel?</h4>
+              <p class="text-neutral-400 leading-relaxed text-xs">Your projects will transition safely to standard view-only storage. No assets or mockups will be deleted, and you can re-access editing tools anytime.</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    
+    <div id="animation-container-2" class="animation-container" style="height: 800vh;">
+        <div class="sticky top-0 left-0 w-full h-screen overflow-hidden z-0">
+            <canvas id="scroll-canvas-2" class="w-full h-full object-cover"></canvas>
+        </div>
+
+        <div class="absolute top-0 left-0 w-full z-10 pointer-events-none">
+            <!-- Header -->
+            <header id="header" class="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center border-b border-white/10 pointer-events-auto bg-black/20 backdrop-blur-sm">
+                <div id="logo-container" class="flex items-center space-x-3">
+                    <span class="w-2.5 h-2.5 bg-white rounded-full"></span>
+                    <span class="font-bold tracking-[0.25em] text-lg text-white uppercase">CG AGENCY</span>
+                </div>
+                <div id="header-cta">
+                    <a href="mailto:hello@cgagency.com" class="group flex items-center space-x-2 border border-white/20 px-4 py-2 rounded-full text-xs font-medium tracking-wider text-white hover:bg-white hover:text-black hover:border-white transition-all duration-300">
+                        <span>WORK WITH US</span>
+                        <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                    </a>
+                </div>
+            </header>
+
+            <main id="main-content" class="max-w-7xl mx-auto px-6 pt-20 pb-32 space-y-24 pointer-events-auto">
+                <!-- SECTION 1: HERO & SOLUTIONS -->
+                <section id="hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start text-white">
+                    <div class="lg:col-span-7">
+                        <h1 id="hero-title" class="text-4xl md:text-5xl lg:text-[60px] leading-tight font-bold tracking-tighter uppercase drop-shadow-lg">
+                            We offer <br />next level <br />
+                            <span class="underline underline-offset-8 decoration-2 decoration-white">solutions</span>
+                        </h1>
+                    </div>
+                    <div class="lg:col-span-5 lg:pt-2">
+                        <p id="hero-subtitle" class="text-lg md:text-xl leading-relaxed font-light opacity-90 drop-shadow-md">
+                            <strong class="font-semibold text-white">After working with us, your business will achieve the new heights. We will return</strong> to you with in-depth analysis, tailored strategies and business problems solved. We transform your problems. After working with us, your business will achieve the new heights.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- SECTION 2: METRICS & STATISTICS -->
+                <section id="stats-section" class="pt-8 text-white">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-16 border-t border-white/20 pt-16">
+                        <div id="stat-box-1" class="space-y-4 group">
+                            <div class="flex items-baseline space-x-1">
+                                <span class="text-6xl lg:text-8xl font-bold tracking-tighter">43k</span>
+                                <span class="text-3xl lg:text-4xl font-light">$</span>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-xs uppercase tracking-[0.3em] font-bold">01 / AVERAGE REVENUE</h3>
+                                <p class="text-sm text-white/70 leading-relaxed max-w-xs font-light">We target custom clients by providing marketing solutions.</p>
+                            </div>
+                        </div>
+                        <div id="stat-box-2" class="space-y-4 group">
+                            <div class="flex items-baseline space-x-1">
+                                <span class="text-6xl lg:text-8xl font-bold tracking-tighter">200</span>
+                                <span class="text-2xl lg:text-3xl font-light">+</span>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-xs uppercase tracking-[0.3em] font-bold">02 / CAMPAIGNS</h3>
+                                <p class="text-sm text-white/70 leading-relaxed max-w-xs font-light">Successfully launched within 3 years on the market.</p>
+                            </div>
+                        </div>
+                        <div id="stat-box-3" class="space-y-4 group">
+                            <div class="flex items-baseline space-x-1">
+                                <span class="text-6xl lg:text-8xl font-bold tracking-tighter">380</span>
+                                <span class="text-2xl lg:text-3xl font-light text-white/80">+</span>
+                            </div>
+                            <div class="space-y-2">
+                                <h3 class="text-xs uppercase tracking-[0.3em] font-bold">03 / SUCCESSFUL PROJECTS</h3>
+                                <p class="text-sm text-white/70 leading-relaxed max-w-xs font-light">With companies with 5+ years on the market.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 3: CARDS -->
+                <section id="cards-section" class="pt-8 border-t border-white/20 text-white">
+                    <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-black/40 backdrop-blur-sm border border-white/10 p-10 flex flex-col justify-between h-80 transition-all duration-300 hover:-translate-y-1 hover:border-white">
+                            <div class="flex justify-between items-start">
+                                <div class="p-3 border border-white/10 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                                <span class="text-xs font-bold tracking-[0.2em] opacity-40">01 / TALENT</span>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-sm md:text-base leading-relaxed font-light opacity-90">We have 20+ offices attracting talent to meet key potential customers.</p>
+                            </div>
+                        </div>
+                        <div class="bg-black/40 backdrop-blur-sm border border-white/10 p-10 flex flex-col justify-between h-80 transition-all duration-300 hover:-translate-y-1 hover:border-white">
+                            <div class="flex justify-between items-start">
+                                <div class="p-3 border border-white/10 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg></div>
+                                <span class="text-xs font-bold tracking-[0.2em] opacity-40">02 / CAMPAIGNS</span>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-sm md:text-base leading-relaxed font-light opacity-90">Our sales and ROI team can start work and build talent to keep running on ROI instantly with direct results.</p>
+                            </div>
+                        </div>
+                        <div class="bg-black/40 backdrop-blur-sm border border-white/10 p-10 flex flex-col justify-between h-80 transition-all duration-300 hover:-translate-y-1 hover:border-white">
+                            <div class="flex justify-between items-start">
+                                <div class="p-3 border border-white/10 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+                                <span class="text-xs font-bold tracking-[0.2em] opacity-40">03 / INFLUENCE</span>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-sm md:text-base leading-relaxed font-light opacity-90">Our goal is to minimize pricing because we need to expand influence on the market.</p>
+                            </div>
+                        </div>
+                        <div class="bg-black/40 backdrop-blur-sm border border-white/10 p-10 flex flex-col justify-between h-80 transition-all duration-300 hover:-translate-y-1 hover:border-white">
+                            <div class="flex justify-between items-start">
+                                <div class="p-3 border border-white/10 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 17 22 12"></polyline></svg></div>
+                                <span class="text-xs font-bold tracking-[0.2em] opacity-40">04 / STRUCTURE</span>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-sm md:text-base leading-relaxed font-light opacity-90">Managing status on products and building consistency standardise first step to make system again.</p>
+                            </div>
+                        </div>
+                        <div class="bg-black/40 backdrop-blur-sm border border-white/10 p-10 flex flex-col justify-between h-80 md:col-span-2 lg:col-span-2 transition-all duration-300 hover:-translate-y-1 hover:border-white">
+                            <div class="flex justify-between items-start">
+                                <div class="p-3 border border-white/10 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg></div>
+                                <span class="text-xs font-bold tracking-[0.2em] opacity-40">05 / STRATEGY</span>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-sm md:text-base leading-relaxed font-light opacity-90">We can handle SEO, promotion in 2-3 months. The actual relevant database of other key items that standardise SaaS SEO can help building analytics and tracking from websites and business growth.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+    <!-- Section 4 -->
+    <div id="section-4" class="relative w-full h-screen bg-black overflow-hidden z-20">
+        <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
+            <source src="https://res.cloudinary.com/g2jlky4l/video/upload/v1783167356/Generate_smooth_video_animation_1080p_202607041741_u9f90n.mp4" type="video/mp4">
+        </video>
+
+        <!-- Coinflect Migration Portal Layout Overlay -->
+        <div class="absolute inset-0 flex flex-col justify-between p-6 md:p-12 z-10 font-sans text-white selection:bg-orange-500/30 selection:text-orange-200">
+            <!-- Subtle top ambient vignette -->
+            <div class="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-neutral-950/40 to-transparent pointer-events-none"></div>
+
+            <!-- HEADER -->
+            <header class="relative z-10 flex justify-between items-center w-full opacity-40 hover:opacity-80 transition-opacity duration-300">
+                <div class="flex items-center space-x-3">
+                    <span class="text-[10px] md:text-xs font-medium tracking-[0.25em] uppercase">Coinflect Protocol</span>
+                </div>
+                <div class="text-[10px] md:text-xs font-medium tracking-[0.25em] uppercase">
+                    Volume 01 // July 2026
+                </div>
+            </header>
+
+            <!-- MAIN HERO -->
+            <main class="relative z-10 flex-grow flex flex-col items-center justify-center my-8 md:my-0">
+                <div class="w-full max-w-5xl flex flex-col items-center">
+                    <!-- Main Visual Title Row -->
+                    <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6 items-center justify-items-center text-center">
+                        <!-- Left Column Text -->
+                        <div class="md:justify-self-end md:text-right">
+                            <h1 class="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight leading-none text-white select-none drop-shadow-lg">Out of time</h1>
+                        </div>
+                        <!-- Center Column Visual (Space) -->
+                        <div class="w-full max-w-[480px] aspect-square hidden md:block"></div>
+                        <!-- Right Column Text -->
+                        <div class="md:justify-self-start md:text-left">
+                            <h1 class="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight leading-none text-white select-none drop-shadow-lg">and space</h1>
+                        </div>
+                    </div>
+
+                    <!-- Subtitle / Interactive Banner -->
+                    <div class="mt-12 text-center px-4">
+                        <button class="group inline-flex flex-col items-center space-y-3 cursor-pointer outline-none focus:ring-1 focus:ring-orange-500/50 rounded-lg p-3 transition-all duration-300 hover:scale-[1.02]">
+                            <p class="text-sm sm:text-base font-light text-neutral-300 max-w-lg leading-relaxed transition-colors duration-300 group-hover:text-white drop-shadow-md">
+                                Coinflect has migrated to wrapped Coinflect.
+                                <span class="inline-flex items-center ml-1 text-orange-400 font-medium group-hover:text-orange-300 transition-colors duration-200">
+                                    Read more in our new article
+                                    <svg class="w-4 h-4 ml-0.5 transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                                </span>
+                            </p>
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- FOOTER -->
+            <footer class="relative z-10 w-full flex flex-col items-center space-y-6 mt-6 md:mt-0">
+                <div class="w-16 h-[1px] bg-white opacity-20"></div>
+                <div class="flex justify-center space-x-8 md:space-x-12 opacity-50 hover:opacity-80 transition-opacity duration-300">
+                    <div class="text-[9px] md:text-[10px] font-medium tracking-[0.3em] uppercase drop-shadow-md">Clarity</div>
+                    <div class="text-[9px] md:text-[10px] font-medium tracking-[0.3em] uppercase drop-shadow-md">Precision</div>
+                    <div class="text-[9px] md:text-[10px] font-medium tracking-[0.3em] uppercase drop-shadow-md">Intent</div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer id="footer" class="min-h-screen bg-black text-white font-sans flex flex-col justify-between p-8 sm:p-12 md:p-16 lg:p-20 relative overflow-hidden select-none z-30">
+      <!-- Elegant Warm Ambient Glow Background -->
+      <div class="absolute inset-0 pointer-events-none z-0 select-none">
+        <div class="absolute inset-0 bg-black"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 15% 100%, rgba(154, 52, 18, 0.5) 0%, rgba(120, 53, 4, 0.25) 35%, rgba(0, 0, 0, 0) 70%); mix-blend-mode: screen;"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 85% 100%, rgba(249, 115, 22, 0.55) 0%, rgba(220, 38, 38, 0.35) 30%, rgba(153, 27, 27, 0.15) 60%, rgba(0, 0, 0, 0) 85%); mix-blend-mode: screen;"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 55% 105%, rgba(234, 88, 12, 0.4) 0%, rgba(185, 28, 28, 0.2) 45%, rgba(0, 0, 0, 0) 75%); mix-blend-mode: screen;"></div>
+      </div>
+
+      <!-- Top Grid Section -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-4 items-start w-full relative z-10 pt-10">
+        <!-- Left: Navigation Menu -->
+        <div class="flex flex-col space-y-3 items-center md:items-start">
+          <a href="#home" class="text-neutral-500 hover:text-white transition-colors duration-300 text-xl md:text-2xl font-light tracking-widest">Home</a>
+          <a href="#about" class="text-white hover:text-neutral-300 transition-colors duration-300 text-xl md:text-2xl font-light tracking-widest">About us</a>
+          <a href="#partnership" class="text-white hover:text-neutral-300 transition-colors duration-300 text-xl md:text-2xl font-light tracking-widest">Partnership</a>
+        </div>
+
+        <!-- Center: Address and Social Buttons -->
+        <div class="flex flex-col items-center justify-center text-center space-y-4">
+          <div class="flex flex-col items-center space-y-1">
+            <span class="text-[10px] md:text-xs text-neutral-500 uppercase tracking-[0.3em] font-semibold font-mono">Address:</span>
+            <p class="max-w-xs md:max-w-sm text-neutral-400 text-xs md:text-sm font-light leading-relaxed font-sans">Colombo,Sri Lanka</p>
+          </div>
+          <!-- Social Links -->
+          <div class="flex items-center space-x-3 pt-2">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-md bg-neutral-900/50 border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-neutral-700 hover:bg-neutral-900 transition-all duration-300 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-md bg-neutral-900/50 border border-neutral-800 flex items-center justify-center text-neutral-400 hover:text-white hover:border-neutral-700 hover:bg-neutral-900 transition-all duration-300 cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Google Partner -->
+        <div class="flex flex-col items-center md:items-end justify-start text-center md:text-right space-y-4">
+          <div class="flex flex-col items-center md:items-end space-y-3">
+            <span class="text-xs md:text-sm text-neutral-500 font-light tracking-wide">Lead Google Partner in 2026</span>
+            <div class="relative overflow-hidden w-28 h-36 bg-[#0c0c0e] border border-neutral-800 rounded-xl p-4 flex flex-col items-center justify-between shadow-lg hover:border-neutral-600 transition-colors duration-300">
+              <div class="flex flex-col items-center">
+                <svg viewBox="0 0 24 24" class="w-7 h-7 mb-2">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l3.66-2.85z" />
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.85c.87-2.6 3.3-4.53 6.16-4.53z" />
+                </svg>
+                <span class="text-[10px] uppercase font-bold tracking-wider text-neutral-400 text-center font-sans leading-tight">Google Partner</span>
+              </div>
+              <div class="w-full border-t border-neutral-900 my-1"></div>
+              <div class="bg-black px-2 py-1 rounded border border-neutral-850 w-full text-center">
+                <span class="text-[9px] uppercase font-semibold tracking-widest text-neutral-500 font-mono block">Premier 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle Grid Section: Copyright & Policies -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 items-center w-full mt-16 md:mt-24 border-t border-neutral-900 pt-8 relative z-10">
+        <span class="text-center md:text-left text-xs md:text-sm text-neutral-500 font-light tracking-wide">&copy; 2026 Zenrixa. All rights reserved.</span>
+        <div class="text-center">
+          <a href="#privacy" class="text-xs md:text-sm text-neutral-500 hover:text-white transition-colors duration-300 tracking-wider underline underline-offset-4 font-light">Privacy Policy</a>
+        </div>
+        <span class="text-center md:text-right text-xs md:text-sm text-neutral-500 font-light tracking-wide">Website by hx6n</span>
+      </div>
+
+      <!-- Elegant Aesthetic Anchor Elements -->
+      <div class="w-full flex flex-col items-center mt-12 md:mt-16 relative z-10">
+        <div class="w-24 h-px bg-white opacity-20 mb-8"></div>
+        <!-- Giant "zenrixa" Brand Display -->
+        <div class="w-full text-center select-none overflow-hidden">
+          <h1 class="text-[8vw] sm:text-[10vw] leading-none select-none text-white tracking-[0.15em] sm:tracking-[0.25em] font-light uppercase pl-[0.15em]" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+            zenrixa
+          </h1>
+        </div>
+        <!-- Triple Elegant Dots -->
+        <div class="mt-6 flex space-x-6 opacity-30">
+          <div class="w-1 h-1 bg-white rounded-full"></div>
+          <div class="w-1 h-1 bg-white rounded-full"></div>
+          <div class="w-1 h-1 bg-white rounded-full"></div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+        function setupAnimation(canvasId, containerId, frameCount, framePathFunc) {
+            const canvas = document.getElementById(canvasId);
+            const context = canvas.getContext('2d');
+            const container = document.getElementById(containerId);
+
+            // Set initial canvas size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const images = [];
+            const preloadImages = () => {
+                for (let i = 1; i <= frameCount; i++) {
+                    const img = new Image();
+                    img.src = framePathFunc(i);
+                    images.push(img);
+                }
+            };
+
+            const render = (img) => {
+                if(!img) return;
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const hRatio = canvas.width / img.width;
+                const vRatio = canvas.height / img.height;
+                const ratio  = Math.max(hRatio, vRatio);
+                
+                const centerShift_x = (canvas.width - img.width * ratio) / 2;
+                const centerShift_y = (canvas.height - img.height * ratio) / 2;  
+                
+                context.drawImage(img, 0, 0, img.width, img.height,
+                                  centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+            }
+
+            const updateImage = index => {
+                if(images[index]) {
+                    render(images[index]);
+                } else {
+                    const img = new Image();
+                    img.src = framePathFunc(index + 1);
+                    img.onload = () => render(img);
+                }
+            };
+
+            preloadImages();
+
+            // Initial render
+            const firstImg = new Image();
+            firstImg.src = framePathFunc(1);
+            firstImg.onload = () => render(firstImg);
+
+            window.addEventListener('scroll', () => {
+                const containerTop = container.offsetTop;
+                const maxScroll = container.offsetHeight - window.innerHeight;
+                let scrollFraction = (window.scrollY - containerTop) / maxScroll;
+                
+                // Clamp scroll fraction between 0 and 1
+                scrollFraction = Math.max(0, Math.min(1, scrollFraction));
+                
+                const frameIndex = Math.min(
+                    frameCount - 1,
+                    Math.ceil(scrollFraction * frameCount)
+                );
+                
+                requestAnimationFrame(() => updateImage(frameIndex));
+            });
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                
+                const containerTop = container.offsetTop;
+                const maxScroll = container.offsetHeight - window.innerHeight;
+                let scrollFraction = (window.scrollY - containerTop) / maxScroll;
+                scrollFraction = Math.max(0, Math.min(1, scrollFraction));
+                
+                const frameIndex = Math.min(
+                    frameCount - 1,
+                    Math.ceil(scrollFraction * frameCount)
+                );
+                updateImage(frameIndex);
+            });
+        }
+
+        // Initialize first animation (120 frames)
+        setupAnimation(
+            'scroll-canvas-1', 
+            'animation-container-1', 
+            120, 
+            index => `./frames/ezgif-frame-${index.toString().padStart(3, '0')}.jpg`
+        );
+
+        // Initialize second animation (240 frames)
+        setupAnimation(
+            'scroll-canvas-2', 
+            'animation-container-2', 
+            240, 
+            index => `./frames2/ezgif-frame-${index.toString().padStart(3, '0')}.jpg`
+        );
+    </script>
+</body>
+</html>
